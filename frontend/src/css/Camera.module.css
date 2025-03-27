@@ -1,0 +1,38 @@
+.videoContainer {
+  margin-top: 40px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.videoContainer button {
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid black;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.videoContainer button:nth-child(1) {
+  color: white;
+  background: red;
+}
+.videoContainer button:nth-child(2) {
+  color: white;
+  background: slategrey;
+}
+/* .videoContainer button:hover{
+
+} */
+.camera video {
+  width: 100%;
+  max-width: 700px;
+  border: "1px solid #ccc";
+}
+
+.btnContainer {
+  display: flex;
+  gap: 10px;
+}

@@ -1,0 +1,45 @@
+.summary {
+  color: var(--color-light-gray);
+}
+button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #4f46e5;
+  border: none;
+  padding: 7px 20px;
+  border-radius: 5px;
+  color: white;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+button svg {
+  stroke: white;
+  width: 20px;
+}
+.topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.boxes {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.infoBox {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.infoBox h4,
+h3 {
+  display: flex;
+  gap: 15px;
+  text-transform: capitalize;
+}
+.infoBox p {
+  margin-left: 38px;
+  text-transform: capitalize;
+  line-height: 1.5;
+}
