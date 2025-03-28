@@ -104,6 +104,18 @@ export namespace services {
 		    return a;
 		}
 	}
+	export class Windows {
+	    isActivated: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Windows(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.isActivated = source["isActivated"];
+	    }
+	}
 
 }
 

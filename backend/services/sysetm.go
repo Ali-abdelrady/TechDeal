@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"syscall"
 )
 
 // System struct to hold system-related functions
@@ -21,8 +22,12 @@ func NewSystem() *System {
 // OpenDeviceManager opens the Windows Device Manager
 func (s *System) OpenDeviceManager() error {
 	if runtime.GOOS == "windows" {
-		cmd := exec.Command("cmd", "/C", "devmgmt.msc")
-		return cmd.Start() // Start runs it in the background
+		cmd := exec.Command("cmd", "/C", "start", "devmgmt.msc")
+
+		// Hide the console window
+		cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+
+		return cmd.Start()
 	}
 	return nil
 }
@@ -46,6 +51,8 @@ func (s *System) GenerateBatteryReport() (string, error) {
 	s.batteryReportPath = filepath.Join(userDir,"Documents", "battery-report.html")
 
 	cmd := exec.Command("powercfg", "/batteryreport", "/output", s.batteryReportPath)
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	
 	if output, err := cmd.CombinedOutput(); err != nil {
 		return "", fmt.Errorf("failed to generate battery report: %w (output: %s)", err, string(output))
 	}

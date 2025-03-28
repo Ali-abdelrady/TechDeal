@@ -113,40 +113,101 @@ const keyboardKeys = [
   { code: "NumpadDecimal", label: "." },
   { code: "NumpadAdd", label: "+", class: styles.numpadAdd },
 
-  // Numpad
-
   { code: "NumpadEnter", label: "enter", class: styles.numpadEnter },
+  { code: "Left Click", label: "", class: styles.leftClick },
+  { code: "Middle Click", label: "", class: styles.middleClick },
+  { code: "Right Click", label: "", class: styles.rightClick },
 ];
 
 export default function Keyboard() {
-  const [keyInfo, setkeyInfo] = useState({});
-  const [pressedKeys, setPressedKey] = useState(new Map());
+  const [keyInfo, setKeyInfo] = useState({});
+  const [pressedKeys, setPressedKeys] = useState(new Map());
+  const [temporaryKeys, setTemporaryKeys] = useState(new Map()); // Tracks pressed effect
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      setkeyInfo({
-        key: event.key,
-        code: event.code,
-      });
-      setPressedKey((prevMap) => {
-        const newMap = new Map(prevMap);
+      setKeyInfo({ key: event.key, code: event.code });
+
+      setPressedKeys((prev) => {
+        const newMap = new Map(prev);
         newMap.set(event.code, true);
+        return newMap;
+      });
+
+      setTemporaryKeys((prev) => {
+        const newMap = new Map(prev);
+        newMap.set(event.code, true); // Mark as temporarily pressed
         return newMap;
       });
     };
 
+    const handleKeyUp = (event) => {
+      setTemporaryKeys((prev) => {
+        const newMap = new Map(prev);
+        newMap.delete(event.code);
+        return newMap;
+      });
+    };
+
+    const handleMouseDown = (event) => {
+      let mouseEvent = "";
+      if (event.button === 0) mouseEvent = "Left Click";
+      if (event.button === 1) mouseEvent = "Middle Click";
+      if (event.button === 2) mouseEvent = "Right Click";
+
+      if (mouseEvent) {
+        setKeyInfo({ key: mouseEvent, code: mouseEvent });
+
+        setPressedKeys((prev) => {
+          const newMap = new Map(prev);
+          newMap.set(mouseEvent, true);
+          return newMap;
+        });
+
+        setTemporaryKeys((prev) => {
+          const newMap = new Map(prev);
+          newMap.set(mouseEvent, true);
+          return newMap;
+        });
+      }
+    };
+
+    const handleMouseUp = (event) => {
+      let mouseEvent = "";
+      if (event.button === 0) mouseEvent = "Left Click";
+      if (event.button === 1) mouseEvent = "Middle Click";
+      if (event.button === 2) mouseEvent = "Right Click";
+
+      if (mouseEvent) {
+        setTemporaryKeys((prev) => {
+          const newMap = new Map(prev);
+          newMap.delete(mouseEvent);
+          return newMap;
+        });
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
   }, []);
   function handleResetButton() {
-    setPressedKey(new Map());
+    setPressedKeys(new Map());
   }
   return (
     <div className={`container ${styles.pageContainer}`}>
       <h1>Keyboard</h1>
       <div className={styles.textContent}>
-        <h2 className="" style={{ textTransform: "capitalize" }}>
-          <strong>Key Pressed:</strong> <span className="">{keyInfo.code}</span>
+        <h2 style={{ textTransform: "capitalize" }}>
+          <strong>Key Pressed:</strong> <span>{keyInfo.code}</span>
         </h2>
         <button onClick={handleResetButton}>
           Reset <RotateCcw />{" "}
@@ -156,9 +217,9 @@ export default function Keyboard() {
         {keyboardKeys.map((key) => (
           <div
             key={key.code}
-            className={`${key.class ? key.class : ""} ${styles.key} ${
-              pressedKeys.has(key.code) ? `${styles.active}` : ""
-            }`}
+            className={`${key.class ? key.class : ""} ${styles.key} 
+              ${pressedKeys.has(key.code) ? styles.active : ""} 
+              ${temporaryKeys.has(key.code) ? styles.pressed : ""}`}
           >
             {key.label}
           </div>

@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { OpenDeviceManager } from "../../wailsjs/go/services/System";
+import logo from "../assets/images/logo.png";
 import {
   Camera,
   NotebookText,
@@ -59,7 +60,7 @@ export default function SideBar() {
 function Logo() {
   return (
     <div className="logo">
-      <img src="/src/assets/images/logo.png" alt="logo" />
+      <img src={logo} alt="logo" />
     </div>
   );
 }

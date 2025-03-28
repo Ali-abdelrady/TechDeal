@@ -13,15 +13,24 @@ import styles from "../css/Summary.module.css";
 import { useSystemInfo } from "../context/SystemInfoContext";
 
 export default function Summary() {
-  const { cpuInfo, ramInfo, gpuInfo, storageInfo, osInfo } = useSystemInfo();
+  const { cpuInfo, ramInfo, gpuInfo, storageInfo, osInfo, windowsActivation } =
+    useSystemInfo();
 
   const infoData = [
-    { icon: <Monitor />, title: "Operating System", value: osInfo?.os },
+    {
+      icon: <Monitor />,
+      title: "Device Info",
+      value: ` Model Name: ${osInfo?.modelName || "Loading..."} \n os: ${
+        osInfo?.os || "Loading..."
+      }`,
+    },
     { icon: <Cpu />, title: "CPU", value: cpuInfo?.name },
     {
       icon: <MemoryStick />,
       title: "RAM",
-      value: `${ramInfo?.size} - ${ramInfo?.slots} Slots`,
+      value: `${ramInfo?.size || "Loading"} - ${
+        ramInfo?.slots || "Loading"
+      } Slots`,
     },
     {
       icon: <MonitorCog />,
@@ -39,12 +48,11 @@ export default function Summary() {
     {
       icon: <ShieldCheck />,
       title: "Windows Activation",
-      value: osInfo?.windowsActivated ? "Activated" : "Not Activated",
-    },
-    {
-      icon: <Pointer />,
-      title: "Touch Screen",
-      value: gpuInfo?.isTouchScreen ? "Yes" : "No",
+      value: !windowsActivation
+        ? "Loading..."
+        : windowsActivation.isActivated
+        ? "Activated"
+        : "Not Activated",
     },
     { icon: <Maximize />, title: "Resolution", value: gpuInfo?.resolution },
   ];

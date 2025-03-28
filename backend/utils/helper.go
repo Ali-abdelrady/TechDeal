@@ -12,7 +12,7 @@ var (
 
 func FormatCapacity(capacity float64) string {
 	if capacity >= TB {
-		return fmt.Sprintf("%.2f TB", math.Ceil(capacity/TB) )
+		return fmt.Sprintf("%.2f TB", capacity/TB)
 	}
-	return fmt.Sprintf("%.2f GB",  math.Ceil(capacity/GB))
+	return fmt.Sprintf("%.2f GB", math.Ceil(capacity/GB))
 }

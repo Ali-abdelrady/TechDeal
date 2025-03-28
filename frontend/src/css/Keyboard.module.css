@@ -49,14 +49,17 @@
   border-radius: 5px;
   font-size: 14px;
   font-weight: bold;
-  transition: background 0.2s;
+  transition: background 0.1s;
 }
 
 .key.active {
   background: #222;
   color: white;
 }
-
+.key.pressed {
+  background: #4f46e5 !important;
+  color: white;
+}
 .tab,
 .backspace,
 .shiftLeft,
@@ -84,4 +87,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.leftClick {
+  grid-column: 6/9;
+  padding: 15px 0;
+  border-bottom-left-radius: 15px;
+}
+.rightClick {
+  grid-column: 10/13;
+  border-bottom-right-radius: 15px;
+}
+
+.middleClick {
+  grid-column: 9;
 }

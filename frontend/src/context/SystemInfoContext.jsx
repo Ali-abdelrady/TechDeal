@@ -4,6 +4,7 @@ import { GetGraphicsInfo } from "../../wailsjs/go/services/GPU";
 import { GetOSInfo } from "../../wailsjs/go/services/OS";
 import { GetRamInfo } from "../../wailsjs/go/services/RAM";
 import { GetStorageInfo } from "../../wailsjs/go/services/Storage";
+import { IsWindowsActivated } from "../../wailsjs/go/services/Windows";
 
 const context = createContext();
 function SystemInfoProvider({ children }) {
@@ -12,14 +13,22 @@ function SystemInfoProvider({ children }) {
   const [storageInfo, SetStorageInfo] = useState(null);
   const [gpuInfo, SetGpuInfo] = useState(null);
   const [osInfo, SetOSInfo] = useState(null);
+  const [windowsActivation, setWindowsActivation] = useState(null);
   useEffect(() => {
     fetchCpu();
     fetchGpu();
     fetchRam();
     fetchStorage();
     fetchOperatingSystem();
+    fetchWindowsActivation();
   }, []);
 
+  async function fetchWindowsActivation() {
+    const response = await IsWindowsActivated();
+
+    setWindowsActivation(response);
+    console.log(response);
+  }
   async function fetchCpu() {
     const response = await GetCpuInfo();
 
@@ -48,7 +57,14 @@ function SystemInfoProvider({ children }) {
   }
   return (
     <context.Provider
-      value={{ cpuInfo, ramInfo, gpuInfo, storageInfo, osInfo }}
+      value={{
+        cpuInfo,
+        ramInfo,
+        gpuInfo,
+        storageInfo,
+        osInfo,
+        windowsActivation,
+      }}
     >
       {children}
     </context.Provider>

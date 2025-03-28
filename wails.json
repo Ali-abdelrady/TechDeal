@@ -10,5 +10,6 @@
     "name": "Ali-abdelrady",
     "email": "aliabdelrady2k16@gmail.com"
   },
-  "backend:dir": "./backend"
+  "backend:dir": "./backend",
+  "assetdir": "frontend/src/assets"
 }
